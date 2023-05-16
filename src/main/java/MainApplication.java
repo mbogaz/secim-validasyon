@@ -12,8 +12,8 @@ public class MainApplication {
     public static HttpClient httpClient = new HttpClient();
 
     public static void main(String[] args) throws IOException {
-        //httpClient.PostRequest("https://sts.chp.org.tr/Default.aspx", 2, 34, 964, 3822965);
-        mainFlow();
+        httpClient.PostRequest("https://sts.chp.org.tr/Default.aspx", 2, 34, 964, 3822965);
+        //mainFlow();
     }
 
     public static void mainFlow() throws IOException {
@@ -42,8 +42,18 @@ public class MainApplication {
         submissions.forEach(System.out::println);
 
         System.out.println("---- ÖZET -----");
-        int kkTotal = submissions.stream().mapToInt(submission -> submission.getCmResult().getVotes().getKk()).sum();
-        int tayyipTotal = submissions.stream().mapToInt(submission -> submission.getCmResult().getVotes().getTayyip()).sum();
+        int kkTotal = submissions.stream().mapToInt(submission -> {
+            if(submission.getCmResult() == null)
+                return 0;
+            else
+                return submission.getCmResult().getVotes().getKk();
+        }).sum();
+        int tayyipTotal = submissions.stream().mapToInt(submission -> {
+            if(submission.getCmResult() == null)
+                return 0;
+            else
+                return submission.getCmResult().getVotes().getTayyip();
+        }).sum();
         System.out.println("okuldaki toplam kk oyu : " + kkTotal + " , toplam rte oyu : " + tayyipTotal);
 
         int chpTotal = submissions.stream().mapToInt(submission -> {
