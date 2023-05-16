@@ -31,24 +31,37 @@ public class OyVeOtesiClient {
                 });
     }
 
-    public List<Neighborhood> getNeighborhoods(int cityId, int districtId) throws IOException {
-        return objectMapper.readValue(httpClient.GetRequest("https://api-sonuc.oyveotesi.org/api/v1/cities/" +
-                        cityId + "/districts/" + districtId + "/neighborhoods"),
-                new TypeReference<>() {
-                });
+    public List<Neighborhood> getNeighborhoods(int cityId, int districtId) {
+        try {
+            String serviceResponse = httpClient.GetRequest("https://api-sonuc.oyveotesi.org/api/v1/cities/" +
+                    cityId + "/districts/" + districtId + "/neighborhoods");
+            return objectMapper.readValue(serviceResponse, new TypeReference<>() {
+            });
+        } catch (Exception e) {
+            System.out.println("getNeighborhoods ERROR , cityId : " + cityId + " - districtId : " + districtId);
+            return null;
+        }
     }
 
-    public List<School> getSchools(int cityId, int districtId, int neighborhoodId) throws IOException {
-        return objectMapper.readValue(httpClient.GetRequest("https://api-sonuc.oyveotesi.org/api/v1/cities/" +
-                        cityId + "/districts/" + districtId + "/neighborhoods/" + neighborhoodId + "/schools"),
-                new TypeReference<>() {
-                });
+    public List<School> getSchools(int cityId, int districtId, int neighborhoodId) {
+        try {
+            String serviceResponse = httpClient.GetRequest("https://api-sonuc.oyveotesi.org/api/v1/cities/" +
+                    cityId + "/districts/" + districtId + "/neighborhoods/" + neighborhoodId + "/schools");
+            return objectMapper.readValue(serviceResponse, new TypeReference<>() {});
+        } catch (Exception e){
+            System.out.println("getSchools ERROR , cityId : " + cityId + " - districtId : " + districtId + " - neighborhoodId : " + neighborhoodId);
+            return null;
+        }
+
     }
 
-    public List<Submission> getSubmission(int schoolId) throws IOException {
-        return objectMapper.readValue(httpClient.GetRequest("https://api-sonuc.oyveotesi.org/api/v1/submission/school/"
-                + schoolId),
-                new TypeReference<>() {
-                });
+    public List<Submission> getSubmission(int schoolId) {
+        try {
+            String serviceResponse = httpClient.GetRequest("https://api-sonuc.oyveotesi.org/api/v1/submission/school/" + schoolId);
+            return objectMapper.readValue(serviceResponse, new TypeReference<>() {});
+        } catch (Exception e) {
+            System.out.println("getSubmission ERROR , schoolId : " + schoolId);
+            return null;
+        }
     }
 }
